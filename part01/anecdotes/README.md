@@ -1,0 +1,1 @@
+Solution for anecdotes task (1.12 -> 1.14)
