@@ -1,3 +1,5 @@
+Solutions for exercises 2.6 => 2.11 & 2.15 => 2.20
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

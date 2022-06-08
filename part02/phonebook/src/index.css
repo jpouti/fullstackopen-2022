@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.succesfulEvent {
+  font-style: italic;
+  font-size: 16px;
+  border: solid green 3px;
+  border-radius: 3px;
+  color: green;
+  background-color: lightgrey;
+  padding: 3vh 1vw;
+  margin-bottom: 5vh;
+}
+
+.errorMsg {
+  font-style: italic;
+  font-size: 16px;
+  border: solid red 3px;
+  border-radius: 3px;
+  color: red;
+  background-color: lightgrey;
+  padding: 3vh 1vw;
+  margin-bottom: 5vh;
+}
