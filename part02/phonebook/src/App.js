@@ -75,7 +75,7 @@ const App = () => {
           displayAddPersonMsg(newName);
         })
         .catch(error => {
-          console.log('error adding name', error)
+          displayValErrorMsg(error.response.data.error)
         })
     }
   }
@@ -131,6 +131,15 @@ const App = () => {
   // display error message
   const displayerErrorMsg = (name) => {
     setNtfyMessage(`Information of ${name} has already been removed from server`)
+    setNtfyClass('errorMsg')
+    setTimeout(() => {setNtfyMessage(null)}, 5*1000);
+    setTimeout(() => {setNtfyClass(null)}, 5*1000);
+  }
+
+  //display validation error msg
+  const displayValErrorMsg = (err) => {
+    console.log(err)
+    setNtfyMessage(`${err}`)
     setNtfyClass('errorMsg')
     setTimeout(() => {setNtfyMessage(null)}, 5*1000);
     setTimeout(() => {setNtfyClass(null)}, 5*1000);
