@@ -1,10 +1,23 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
+  title: {
+    type: String
+  },
+  author: {
+    type: String
+  },
+  url: {
+    type: String,
+    required: function() { //required to have either title or url
+      if (!this.title) {
+        return [true, 'Title and URL missing, either of them is needed to post']
+      }
+    }
+  },
+  likes: {
+    type: Number
+  }
 })
 
 blogSchema.set('toJSON', {
