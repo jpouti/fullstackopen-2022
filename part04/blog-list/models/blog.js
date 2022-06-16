@@ -1,12 +1,6 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-  title: {
-    type: String
-  },
-  author: {
-    type: String
-  },
   url: {
     type: String,
     required: function() { //required to have either title or url
@@ -14,6 +8,16 @@ const blogSchema = new mongoose.Schema({
         return [true, 'Title and URL missing, either of them is needed to post']
       }
     }
+  },
+  title: {
+    type: String
+  },
+  author: {
+    type: String
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   likes: {
     type: Number

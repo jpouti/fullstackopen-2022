@@ -5,26 +5,26 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
 
+const User = require('../models/user')
 
-
-beforeEach(async () => {
-  await Blog.deleteMany({})
-  console.log('cleared')
-
-  for (let blog of helper.initialBlogs) {
-    let blogObject = new Blog(blog)
-    await blogObject.save()
-    console.log('saved')
-  }
-  console.log('done')
-})
+let token
 
 describe('Blog list tests', () => {
-  const newBlogObject = {
+  // initialize blogs before 'first blog list' tests -> get & post tests
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await User.deleteMany({})
+    token = await helper.getToken('root', 'root')
+
+    for (let blog of helper.initialBlogs) {
+      let blogObject = new Blog(blog)
+      await blogObject.save()
+    }
+  })
+  let newBlogObject = {
     title: 'First class tests',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-    __v: 0
   }
   test('notes are returned as json (4.8 -> 4.12)', async () => {
     await api
@@ -46,6 +46,7 @@ describe('Blog list tests', () => {
   test('HTTP POST succesfully creates a new blog post => saved to the db & likes property to default 0 if property is missing, STEP 3 & STEP 4', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(newBlogObject)
       .expect(201)
 
@@ -65,6 +66,7 @@ describe('Blog list tests', () => {
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(blogObjectWithoutTitleAndUrl)
       .expect(400)
 
@@ -73,20 +75,47 @@ describe('Blog list tests', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
       .send(blogObjectWithoutTitle)
       .expect(201) // works with url || title
 
     const blogsAfterSecond = await helper.blogsIndb()
     expect(blogsAfterSecond).toHaveLength(helper.initialBlogs.length + 1) // +1 from blog without title
   })
+  test('Posting a new blog without provided token is failing with status code 401', async() => {
+    const blogsAtStart = await helper.blogsIndb()
+    await api
+      .post('/api/blogs')
+      .send(newBlogObject)
+      .expect(401)
+    const blogsAfter = await helper.blogsIndb()
+    expect(blogsAtStart).toHaveLength(blogsAfter.length)
+  })
+
 })
 
 describe('Blog list expansions (4.13 - 4.14)', () => {
+  // initialize blogs with authorization for testing DELETE
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await User.deleteMany({})
+    token = await helper.getToken('root', 'root')
+
+    for (let blog of helper.initialBlogs) {
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
+        .send(blog)
+    }
+  })
   test('Deleting single blog post is succesfull, STEP 1', async() => {
+
     const blogsAtStart = await helper.blogsIndb()
     const blogToDelete = blogsAtStart[0]
+
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `bearer ${token}`)
       .expect(204)
     const blogsAtEnd = await helper.blogsIndb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
@@ -103,6 +132,7 @@ describe('Blog list expansions (4.13 - 4.14)', () => {
     }
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
+      .set('Authorization', `bearer ${token}`)
       .send(blogUpdate)
       .expect(200)
 
