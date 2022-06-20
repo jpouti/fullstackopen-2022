@@ -1,13 +1,13 @@
-const Notification = ({ message }) => { // add styles
-    if(message === null) {
-        return null
-    }
-
+const Notification = ({ message, styles }) => {
+  if(message === '') {
+    return null
+  } else {
     return (
-        <div>
-            {message}
-        </div>
+      <div className={styles}>
+        {message}
+      </div>
     )
+  }
 }
 
 export default Notification
