@@ -31,7 +31,7 @@ const Blog = ({ blog, handleLike, handleDeleteBlog }) => {
         <p id='blog-url'>{blog.url}</p>
         <div className='flex-container'>
           <p id='blog-likes'>likes {blog.likes}</p>
-          <button onClick={() => handleLike(blog)}>like</button>
+          <button id='like-btn' onClick={() => handleLike(blog)}>like</button>
         </div>
         <p>{blog.author}</p>
         <button onClick={() => handleDeleteBlog(blog)} id='remove-btn'>remove</button>

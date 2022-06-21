@@ -19,7 +19,6 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    console.log(blogs)
     blogsService
       .getAll()
       .then(blogs => {
@@ -144,7 +143,7 @@ const App = () => {
         loginForm() :
         <div>
           <div className='flex-container'>
-            <p>{user.name} logged-in</p>
+            <p>{user.name} logged in</p>
             <button onClick={() => logoutHandler()}>logout</button>
           </div>
           <Togglable showButton='create new blog' ref={blogFormRef}>
