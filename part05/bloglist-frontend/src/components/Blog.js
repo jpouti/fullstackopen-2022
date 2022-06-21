@@ -18,29 +18,33 @@ const Blog = ({ blog, handleLike, handleDeleteBlog }) => {
     marginBottom: 5
   }
 
-  Blog.propTypes = {
-    blog: PropTypes.object.isRequired,
-    handleLike: PropTypes.func.isRequired,
-    handleDeleteBlog: PropTypes.func.isRequired,
-  }
 
   return (
     <div style={blogStyle}>
       <div className='flex-container'>
         <p>{blog.title}</p>
+        <p>{blog.author}</p>
         <button onClick={toggleVisibility}>{visible ? 'Hide' : 'Show'}</button>
       </div>
+      {visible !== false &&
       <div style={showDetails}>
-        <p>{blog.url}</p>
+        <p id='blog-url'>{blog.url}</p>
         <div className='flex-container'>
-          <p>{blog.likes}</p>
+          <p id='blog-likes'>likes {blog.likes}</p>
           <button onClick={() => handleLike(blog)}>like</button>
         </div>
         <p>{blog.author}</p>
         <button onClick={() => handleDeleteBlog(blog)} id='remove-btn'>remove</button>
-      </div>
+      </div> }
     </div>
   )
 }
 
 export default Blog
+
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDeleteBlog: PropTypes.func.isRequired,
+}
