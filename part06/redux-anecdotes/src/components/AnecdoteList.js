@@ -10,7 +10,7 @@ const AnecdoteList = () => {
   const handleVote = (id) => {
     const voted = anecdotes.find(a => a.id === id)
     dispatch(updateVoteAnecdote(voted))
-    dispatch(setNotification(voted.content, 5))
+    dispatch(setNotification(`Voted: '${voted.content}'`, 5))
   }
 
   // sorting anecdotes in descending order by votes
