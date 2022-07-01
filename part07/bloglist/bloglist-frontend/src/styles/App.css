@@ -1,0 +1,51 @@
+/* succesfull notification */
+.succesfulEvent {
+  font-style: italic;
+  font-size: 16px;
+  border: solid green 3px;
+  border-radius: 3px;
+  color: green;
+  background-color: lightgrey;
+  padding: 3vh 1vw;
+  margin-bottom: 5vh;
+}
+
+/* error notification */
+.errorMsg {
+  font-style: italic;
+  font-size: 16px;
+  border: solid red 3px;
+  border-radius: 3px;
+  color: red;
+  background-color: lightgrey;
+  padding: 3vh 1vw;
+  margin-bottom: 5vh;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 2.5vw;
+}
+
+#remove-btn {
+  background-color: rgba(0, 89, 255, 0.753);
+  border-radius: 4px;
+  border: solid 1px skyblue;
+}
+
+/* /users */
+
+.user-container {
+  display: flex;
+  gap: 2.5vw;
+}
+
+#user-name {
+  width: 12.5vw;
+}
+
+#users-blogs {
+  margin-left: 15vw;
+  font-weight: bold;
+}
