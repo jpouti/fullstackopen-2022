@@ -26,7 +26,10 @@
   },
   "dependencies": {
     "apollo-server": "^3.9.0",
+    "dotenv": "^16.0.1",
     "graphql": "^16.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.3",
     "uuid": "^8.3.2"
   }
 }
