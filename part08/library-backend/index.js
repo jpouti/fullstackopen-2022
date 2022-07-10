@@ -94,7 +94,7 @@ const resolvers = {
 
       return books
     },
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => await Author.find({}),
     me: (root, args, context) => {
       return context.currentUser
     },
@@ -115,7 +115,18 @@ const resolvers = {
         born: author.born,
         bookCount: booksCount
       }
+    }
+  },
+  Author: {
+    bookCount: async (root) => {
+      const author = await Author.findOne({ name: root.name })
 
+      if(!author) {
+        return
+      }
+
+      const booksCount = await Book.find( { author: author } ).countDocuments()
+      return booksCount
     }
   },
   Mutation: {
