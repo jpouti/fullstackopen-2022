@@ -28,7 +28,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <YearForm authors={authors} />
+      { props.user && <YearForm authors={authors} /> }
     </div>
   )
 }

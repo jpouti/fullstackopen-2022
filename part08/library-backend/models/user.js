@@ -5,6 +5,9 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         minLength: 3,
+    },
+    favorite: {
+        type: String
     }
 })
 

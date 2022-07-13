@@ -24,6 +24,7 @@ mongoose.connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true 
 const typeDefs = gql`
   type User {
     username: String!
+    favorite: String
     id: ID!
   }
 
@@ -64,6 +65,7 @@ const typeDefs = gql`
     editAuthor(name:String!, setBornTo: Int!): Author
     createUser(username: String!, password: String!): User
     login(username: String!, password: String!): Token
+    setFavorite(setFavorite: String!): User
   }
 `
 
@@ -203,6 +205,26 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, JWT_SECRET)}
+    },
+    setFavorite: async(root, args, context) => {
+      const currentUser = context.currentUser
+
+      if(!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+
+      const user = await User.findOne({ _id: currentUser._id})
+
+      try {
+        user.favorite = args.setFavorite
+        await user.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+
+      return user
     }
   }
 }
