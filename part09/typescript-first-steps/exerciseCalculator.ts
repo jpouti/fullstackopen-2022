@@ -1,9 +1,9 @@
 interface Result {
     periodLength: number,
     traininDays: number,
-    success: boolean,
-    rating: number,
-    ratingDescription: string,
+    success: boolean | undefined,
+    rating: number | undefined,
+    ratingDescription: string | undefined,
     target: number,
     average: number
 }
