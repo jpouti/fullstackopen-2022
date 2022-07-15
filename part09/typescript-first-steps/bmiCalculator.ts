@@ -11,12 +11,11 @@ const parseArguments = (args: Array<string>): BmiValues => {
         return {
             value1: Number(args[2]),
             value2: Number(args[3]),
-        }
+        };
     } else {
-        throw new Error('Provided values were not numbers')
+        throw new Error('Provided values were not numbers');
     }
-
-}
+};
 // height as cm & mass as kg
 export const calculateBmi = (height: number, mass: number) => {
     const heightToM2 = (0.01 * height) ** 2;
@@ -43,11 +42,11 @@ export const calculateBmi = (height: number, mass: number) => {
         console.log('Obese (Class II)');
         return ('Obese (Class II)');
     } else if (bmi >= 40) {
-        console.log('Obese (Class III)')
-        return ('Obese (Class III)')
+        console.log('Obese (Class III)');
+        return ('Obese (Class III)');
     }
     return NaN;
-}
+};
 
 try {
     const { value1, value2 } = parseArguments(process.argv);
@@ -55,7 +54,7 @@ try {
 } catch (error:unknown) {
     let errorMessage = 'Something bad happened';
     if (error instanceof Error) {
-        errorMessage += ' Error ' + error.message
+        errorMessage += ' Error ' + error.message;
     }
-    console.log(errorMessage)
+    console.log(errorMessage);
 }
