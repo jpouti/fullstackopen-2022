@@ -9,8 +9,9 @@ import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { Stack } from "@mui/material";
 
+
 const PatientPage = () => {
-    const [{ patientDetails }, dispatch] = useStateValue();
+    const [{ patientDetails, diagnosis }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
     
     React.useEffect(() => {
@@ -48,6 +49,11 @@ const PatientPage = () => {
         }
     };
 
+    const getDiagnoseName = (code:string):string | undefined => {
+        const diagnoseName = diagnosis[code].name;
+        return diagnoseName;
+    };
+
     return (
         <div>
             <Stack direction="row" alignItems="center" spacing={2} >
@@ -56,6 +62,19 @@ const PatientPage = () => {
             </Stack>
             <p>ssn: {patientDetails.ssn}</p>
             <p>occupation: {patientDetails.occupation}</p>
+            <h3>entries</h3>
+            <div>
+                {patientDetails.entries.map(entry => (
+                    <div key={entry.id}>
+                        <p>{entry.date} {entry.description}</p>
+                        <ul>
+                        {entry.diagnosisCodes && entry.diagnosisCodes.map(code => {
+                            return <li key={code}>{code} {getDiagnoseName(code)}</li>;
+                        })}
+                        </ul>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 
