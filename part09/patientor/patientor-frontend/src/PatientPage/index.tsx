@@ -3,15 +3,23 @@ import React from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
-import { Patient } from "../types";
+import { Patient, Entry } from "../types";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { Stack } from "@mui/material";
+import  HospitalEntry  from '../components/HospitalEntry';
+import OccupationalHealthcareEntry from "../components/OccupationalHealthcareEntry";
+import HealthCheckEntry from "../components/HealthCheckEntry";
 
+const assertNever = (value:never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+};
 
 const PatientPage = () => {
-    const [{ patientDetails, diagnosis }, dispatch] = useStateValue();
+    const [{ patientDetails }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
     
     React.useEffect(() => {
@@ -49,9 +57,17 @@ const PatientPage = () => {
         }
     };
 
-    const getDiagnoseName = (code:string):string | undefined => {
-        const diagnoseName = diagnosis[code].name;
-        return diagnoseName;
+    const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+        switch (entry.type) {
+            case "Hospital":
+                return <HospitalEntry entry={entry}/>;
+            case "OccupationalHealthcare":
+                return <OccupationalHealthcareEntry entry={entry} />;
+            case "HealthCheck":
+                return <HealthCheckEntry entry={entry} />;
+            default:
+                return assertNever(entry);
+        }
     };
 
     return (
@@ -65,14 +81,7 @@ const PatientPage = () => {
             <h3>entries</h3>
             <div>
                 {patientDetails.entries.map(entry => (
-                    <div key={entry.id}>
-                        <p>{entry.date} {entry.description}</p>
-                        <ul>
-                        {entry.diagnosisCodes && entry.diagnosisCodes.map(code => {
-                            return <li key={code}>{code} {getDiagnoseName(code)}</li>;
-                        })}
-                        </ul>
-                    </div>
+                    <EntryDetails entry={entry} key={entry.id}/>
                 ))}
             </div>
         </div>
