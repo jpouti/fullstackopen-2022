@@ -10,7 +10,7 @@ export enum Gender {
     Other = 'other'
 }
 
-interface BaseEntry {
+export interface BaseEntry {
     id: string;
     description: string;
     date: string;
@@ -25,7 +25,7 @@ export enum HealthCheckRating {
     "CriticalRisk" = 3
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
     type: "HealthCheck";
     healthCheckRating: HealthCheckRating
 }
@@ -41,17 +41,16 @@ interface OccupationalHealthcareEntry extends BaseEntry {
     sickLeave?: { startDate: string, endDate: string }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type Entry =
     | HospitalEntry
     | OccupationalHealthcareEntry
     | HealthCheckEntry;
 
-/*
+
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
-type EntryWithoutId = UnionOmit<Entry, 'id'>;
-*/
+export type NewEntry = UnionOmit<Entry, 'id'>;
+
 
 export interface Patient {
     id: string;

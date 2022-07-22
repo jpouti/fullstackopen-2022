@@ -1,9 +1,9 @@
 import patientData from '../../data/patients';
 import { v1 as uuid } from 'uuid';
 
-import { NewPatientEntry, Patient, PublicPatient } from '../types';
+import { NewEntry, NewPatientEntry, Patient, PublicPatient } from '../types';
 
-const patients: Array<Patient> = patientData;
+let patients: Array<Patient> = patientData;
 
 const getEntries = () => {
     return patients;
@@ -32,9 +32,19 @@ const getPatient = (id: string): Patient | undefined => {
     return patients.find((p) => p.id === id);
 };
 
+const addEntry = (patient: Patient, newEntry: NewEntry): Patient => {
+    const updatePatientEntry = { ...patient, entries: patient.entries.concat({ ...newEntry, id: uuid()})};
+    patients = patients.map(p => (
+        p.id === patient.id ? updatePatientEntry : p
+    ));
+
+    return updatePatientEntry;
+};
+
 export default {
     getEntries,
     getPatientsWithoutSSN,
     addPatient,
-    getPatient
+    getPatient,
+    addEntry
 };

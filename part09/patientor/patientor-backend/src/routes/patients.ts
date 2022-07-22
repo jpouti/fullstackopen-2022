@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import toNewPatientEntry, { toNewEntry } from '../utils';
 
 router.get('/', (_req, res) => {
     res.send(patientService.getPatientsWithoutSSN());
@@ -35,6 +35,22 @@ router.get('/:id', (req, res) => {
             errorMessage = ' Error: ' + error.message;
         }
         res.status(400).send(errorMessage);
+    }
+});
+
+
+router.post('/:id/entries', (req, res) => {
+    const patient = patientService.getPatient(req.params.id);
+    if(patient) {
+        try {
+            const newEntry = toNewEntry(req.body);
+            const addedEntry = patientService.addEntry(patient, newEntry);
+            res.json(addedEntry);
+        } catch (error: unknown) {
+            res.status(400).send({ error: error });
+        }
+    } else {
+        res.status(400).send({ error: "Patient not found, invalid patient id" });
     }
 });
 
