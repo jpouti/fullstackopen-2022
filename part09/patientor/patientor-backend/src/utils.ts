@@ -90,25 +90,29 @@ const parseSpecialist = (specialist:unknown): string => {
     return specialist;
 };
 
-const isStringArray = (param: any[]):param is string[] => {
-    return param.some((index) => !isString(index));
+const isDiagnoseArray = (param: any[]):param is Array<DiagnoseEntry['code']> => {
+    return param.every((param) => isString(param));
 };
 
 const parseDiagnosisCodes = (diagnosisCodes:unknown): Array<DiagnoseEntry['code']> => {
-    if (!Array.isArray(diagnosisCodes) || !isStringArray(diagnosisCodes)) {
+    if (!Array.isArray(diagnosisCodes) || !isDiagnoseArray(diagnosisCodes)) {
         throw new Error("Incorrect or missing diagnoses");
     }
     return diagnosisCodes;
 };
 
+
 const isHealthRating = (param: any): param is HealthCheckRating => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return Object.values(HealthCheckRating).includes(param);
+    if (param >= 0 && param <= 4) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
-    if (!healthCheckRating || healthCheckRating === null || !isHealthRating(healthCheckRating)) {
+    if (!isHealthRating(healthCheckRating)) {
         throw new Error('Incorrect or missing healthCheckRating: ' + healthCheckRating);
     }
     return healthCheckRating;

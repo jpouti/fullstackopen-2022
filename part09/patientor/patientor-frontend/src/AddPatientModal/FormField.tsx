@@ -10,6 +10,7 @@ import {
 import { Diagnosis, Gender } from "../types";
 import { InputLabel } from "@material-ui/core";
 import Input from '@material-ui/core/Input';
+import { HealthRatingOption } from '../AddEntryModal/AddEntryForm';
 
 // structure of a single option
 export type GenderOption = {
@@ -21,12 +22,13 @@ export type GenderOption = {
 type SelectFieldProps = {
   name: string;
   label: string;
-  options: GenderOption[];
+  options?: GenderOption[];
+  healthRatingOption?: HealthRatingOption[];
 };
 
 const FormikSelect = ({ field, ...props }: FieldProps) => <Select {...field} {...props} />;
 
-export const SelectField = ({ name, label, options }: SelectFieldProps) => (
+export const SelectField = ({ name, label, options, healthRatingOption }: SelectFieldProps) => (
   <>
     <InputLabel>{label}</InputLabel>
     <Field
@@ -36,7 +38,12 @@ export const SelectField = ({ name, label, options }: SelectFieldProps) => (
       component={FormikSelect}
       name={name}
     >
-      {options.map((option) => (
+      {options && options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label || option.value}
+        </MenuItem>
+      ))}
+      {healthRatingOption && healthRatingOption.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label || option.value}
         </MenuItem>

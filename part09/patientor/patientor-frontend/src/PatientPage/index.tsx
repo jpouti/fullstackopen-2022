@@ -1,16 +1,17 @@
-import { useStateValue, setPatientPage } from "../state";
+import { useStateValue, setPatientPage, addEntry } from "../state";
 import React from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
-import { Patient, Entry } from "../types";
+import { Patient, Entry, NewEntry } from "../types";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
-import { Stack } from "@mui/material";
+import { Stack, Button } from "@mui/material";
 import  HospitalEntry  from '../components/HospitalEntry';
 import OccupationalHealthcareEntry from "../components/OccupationalHealthcareEntry";
 import HealthCheckEntry from "../components/HealthCheckEntry";
+import AddEntryModal from "../AddEntryModal";
 
 const assertNever = (value:never): never => {
     throw new Error(
@@ -21,6 +22,16 @@ const assertNever = (value:never): never => {
 const PatientPage = () => {
     const [{ patientDetails }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string }>();
+
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string>();
+  
+    const openModal = (): void => setModalOpen(true);
+  
+    const closeModal = (): void => {
+      setModalOpen(false);
+      setError(undefined);
+    };
     
     React.useEffect(() => {
         const fetchPatient =  async () => {
@@ -35,13 +46,29 @@ const PatientPage = () => {
             }
         };
         void fetchPatient();
-    }, [dispatch]);
+    }, [dispatch, modalOpen]);
 
     if (!patientDetails) {
         return (
             <div>loading...</div>
         );
     }
+
+    const submitNewEntry = async (values: NewEntry) => {
+        if (id) {
+            try {
+                const { data: newEntry } = await axios.post<Entry>(
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    `${apiBaseUrl}/patients/${id}/entries`,
+                    values
+                );
+                dispatch(addEntry(newEntry, id));
+                closeModal();
+            } catch (error: unknown) {
+                console.error(error);
+            }   
+        }
+    };
 
     const checkGender = () => {
         if (!patientDetails.gender) {
@@ -84,6 +111,15 @@ const PatientPage = () => {
                     <EntryDetails entry={entry} key={entry.id}/>
                 ))}
             </div>
+            <AddEntryModal 
+              modalOpen={modalOpen}
+              onSubmit={submitNewEntry}
+              error={error}
+              onClose={closeModal}
+            />
+            <Button variant="contained" onClick={() => openModal()}>
+                Add New Entry
+            </Button>
         </div>
     );
 

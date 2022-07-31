@@ -48,6 +48,6 @@ Content-Type: application/json
     "description": "test",
     "date": "2022-10-06",
     "specialist": "test",
-    "healthCheckRating": 1,
+    "healthCheckRating": 0,
     "diagnosisCodes": [["S62.5"]]
 }
