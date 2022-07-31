@@ -22,6 +22,10 @@ const healtRatingOptions: HealthRatingOption[] = [
     { value: HealthCheckRating.CriticalRisk, label: "Critical Risk" },
 ];
 
+const isDate = (date:string):boolean => {
+    return Boolean(Date.parse(date));
+};
+
 export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
     const [{ diagnosis }] = useStateValue();
     return (
@@ -38,14 +42,19 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
                 const requiredError = "Field is required";
                 const errors: { [field: string]: string } = {};
                 if (!values.description) {
-                    errors.name = requiredError;
+                    errors.description = requiredError;
                 }
+
                 if (!values.date) {
-                    errors.name = requiredError;
+                    errors.date = requiredError;
+                } else if (!isDate(values.date)) {
+                    errors.date = "Date is incorrectly formatted, please input 'YYYY-MM-DD' ";
                 }
+
                 if (!values.specialist) {
-                    errors.name = requiredError;
+                    errors.specialist = requiredError;
                 }
+
                 return errors;
             }}
             >
