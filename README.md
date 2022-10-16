@@ -24,7 +24,7 @@ Links to the course parts and to my solutions for the course's exercises can be 
 
 ### [Part 9 - Typescript](https://github.com/jpouti/fullstackopen-2022/tree/main/part09)
 
-### [Part 11 - CI/CD](hhttps://github.com/jpouti/full-stack-open-pokedex)
+### [Part 11 - CI/CD](https://github.com/jpouti/full-stack-open-pokedex)
 
 ### [Part 12 - Containers](https://github.com/jpouti/fullstackopen-2022-part12)
 
